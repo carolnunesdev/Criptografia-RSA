@@ -189,3 +189,64 @@ Implementações educacionais (como as que usam chaves de 512 bits e ignoram o *
 
 > 🎓 "O RSA nos ensina que a matemática pode ser tanto elegante quanto prática, fornecendo segurança através da beleza dos números primos."
 ```
+// SIMULAÇÃO DE ESTRUTURA DE CÓDIGO FUNCIONAL EM RUST
+
+use num_bigint::{BigInt, Sign, RandBigInt};
+use rand::rngs::OsRng; // Para geração de números aleatórios seguros
+
+// 1. Funções Auxiliares (Miller-Rabin, Euclidiano Estendido, Exp. Modular)
+
+// fn exponenciacao_modular(base: &BigInt, exp: &BigInt, modulo: &BigInt) -> BigInt { ... } [21]
+// fn algoritmo_euclidiano_estendido(a: &BigInt, b: &BigInt) -> (BigInt, BigInt, BigInt) { ... } [22]
+// fn inverso_modular(e: &BigInt, phi: &BigInt) -> BigInt { ... } [7, 8]
+// fn eh_primo(n: &BigInt, k: u32) -> bool { ... } (Implementa Miller-Rabin) [20]
+
+// 2. Estruturas de Chave
+struct PublicKey {
+    n: BigInt, // Módulo
+    e: BigInt, // Expoente público (e.g., 65537)
+}
+
+struct PrivateKey {
+    n: BigInt,
+    d: BigInt, // Expoente privado
+}
+
+// 3. Função de Geração de Chaves
+fn generate_keys(bit_size: u64) -> (PublicKey, PrivateKey) {
+    // 1. Gerar p e q (primos de bit_size/2) [6]
+    // 2. Calcular n = p * q [6]
+    // 3. Calcular phi_n = (p - 1) * (q - 1) [8]
+    // 4. Definir e = 65537 [8]
+    // 5. Calcular d = inverso_modular(e, phi_n) [8]
+    // Retornar (PublicKey { n, e }, PrivateKey { n, d })
+}
+
+// 4. Criptografia
+fn encrypt(message: &BigInt, pub_key: &PublicKey) -> BigInt {
+    // c = message^e mod n
+    // Usa exponenciacao_modular [9, 21]
+}
+
+// 5. Descriptografia
+fn decrypt(ciphertext: &BigInt, priv_key: &PrivateKey) -> BigInt {
+    // m = ciphertext^d mod n
+    // Usa exponenciacao_modular [9, 21]
+}
+
+// 6. Teste Principal (main)
+fn main() {
+    let bit_size = 512; // Chave educacional [12]
+    let (pub_key, priv_key) = generate_keys(bit_size);
+
+    // Mensagem a ser criptografada (em formato BigInt)
+    let original_message = BigInt::from(123456789);
+
+    let ciphertext = encrypt(&original_message, &pub_key);
+
+    let decrypted_message = decrypt(&ciphertext, &priv_key);
+
+    // Validação
+    assert_eq!(original_message, decrypted_message);
+    println!("Descriptografia bem-sucedida!");
+}
